@@ -8,26 +8,20 @@ import {
 } from './styles';
 import { useNavigate } from 'react-router-dom';
 import useDeviceDetect from '../../hooks/useDeviceDetect';
-import { Typography } from '@mui/material';
-import { LoginTabs } from '../auth/LoginTabs';
-import { LoadingButton } from '../common/Buttons';
+import { Autocomplete, Button, TextField, Typography } from '@mui/material';
 import { Column, Row } from '../common/Flexbox';
 import { IntroductionColumn } from './IntroductionColumn';
+import { family } from '../../utils/utils';
+import { translate } from 'counterpart';
 
 type WelcomeSectionType = {
-  onLogin: (username: string, password: string) => Promise<void>, 
-  onSignin: (username: string, password: string) => Promise<void>,
-  tabNumber: number,
-  changeTabNumber: (num: number) => void,
-  position?: 'absolute' | 'relative'
+  onLogin: React.Dispatch<React.SetStateAction<string | undefined>>;
+  position?: 'absolute' | 'relative';
 }
 
 export const WelcomeSection = ({ 
-  onLogin,
-  onSignin,
-  tabNumber,
-  changeTabNumber,
-  position = 'relative'
+  position = 'relative',
+  onLogin
 } : WelcomeSectionType) => {
 
   const isMobile = useDeviceDetect();
@@ -35,53 +29,22 @@ export const WelcomeSection = ({
   let navigate = useNavigate();
 
   const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-
   const [usernameError, setUsernameError] = useState(false);
-  const [passwordError, setPasswordError] = useState(false);
-
-
+    
   function handleUserNameChange(value: string){
     setUsername(value);
   }
 
-  // function handlePasswordChange(event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>){
-  function handlePasswordChange(event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>){
-    setPassword(event.target.value);
-  }
-  
-  const onSigninClick = async() => {
-    const usError = !username;
-    const pError =  !password;
-
-    setUsernameError(usError);
-    setPasswordError(pError);
-
-    if (!(usError || pError))
-    {
-      await onSignin(username, password);
-      navigate('/notebook/gifts')
-    }
-  };
-
   const onLoginClick = async() => {
-    const pError =  !password;
     const usError = !username;
     setUsernameError(usError);
-    setPasswordError(pError);
 
-    if (!(pError || usError)) {
+    if (!usError) {
     {
-      await onLogin(username, password);
+      onLogin(username);
       navigate('/notebook/gifts');}
     }
   };
-
-  function handleTabChange(_event: any, newValue: number){
-    setUsernameError(false);
-    setPasswordError(false);
-    changeTabNumber(newValue);
-  }
 
   return (
     <Column horizontal='start' vertical={'center'} className='welcomeSection' style={{ ...welcomeSection, position: position}}>
@@ -95,24 +58,28 @@ export const WelcomeSection = ({
             <Row width='100%' height='100%' vertical={'center'}>
               <Column height='100%' width='100%' vertical={'space-around'}>
                 { !isMobile && <IntroductionColumn /> }
-                <LoginTabs
-                  tabNumber={tabNumber}
-                  handleTabChange={handleTabChange} 
-                  handlePasswordChange={handlePasswordChange}
-                  passwordError={passwordError} 
-                  usernameError={usernameError}
-                  handleUserNameChange={handleUserNameChange}
-                  visitorOption
-                  orientation='vertical'
-                  style={{marginLeft: '-20px'}}
-                >
-                  <Row horizontal='space-around' style={{width: '100%', paddingTop: '10px'}}>
-                    {tabNumber === 0 && 
-                    <LoadingButton className='whiteButton' variant='outlined' type='submit' onClick={onSigninClick}> {'connection.signin'}</LoadingButton>}
-                    {tabNumber === 1 && 
-                    <LoadingButton className='whiteButton' variant='outlined' type='submit' onClick={onLoginClick}> {'connection.login'}</LoadingButton>}
-                  </Row>
-                </LoginTabs>
+                <Autocomplete
+                  fullWidth
+                  options={family}
+                  getOptionLabel={(member: string) => member}
+                  filterSelectedOptions
+                  disableCloseOnSelect
+                  onChange={(_event, value) => handleUserNameChange(value || '')}
+                  renderInput={(params: any) => (
+                    <TextField
+                      {...params}
+                      error = {usernameError}
+                      variant="standard"
+                      label={ translate('connection.username') }
+                      placeholder={ translate('connection.usernameError') }
+                    />
+                  )}
+                />
+                <Row horizontal='space-around' style={{width: '100%', paddingTop: '10px'}}>
+                  <Button className='whiteButton' variant='outlined' type='submit' onClick={ onLoginClick }>
+                    { translate('connection.login') }
+                  </Button>
+                </Row>
               </Column>
             </Row>
           </form>

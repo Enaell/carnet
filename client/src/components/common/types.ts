@@ -1,25 +1,12 @@
-export type UserType = {
-    _id?: string,
-    token?: string,
-    email?: string,
-    username: string,
-    role?: RoleType,
-}
-
-export type RoleType = 'Admin' | 'Customer';
-
-export type VisibilityType = 'loggedin' | 'owner' ;
-
-export type giftKind = 'other' | 'book' | 'boardgame' | 'videogame' | 'cooking' | 'cloth' | 'jewel' | 'game' | 'techno' | 'sport' | 'association';
+import { typeOfGift } from "../../utils/utils";
 
 export type GiftType= {
     id?: string,
     owner?: string,
     name?: string,
-    types?: giftKind[],
+    types?: typeOfGift[],
     price?: {min?: number, max?: number, average?: number},
     reservations?: {userName: string, price?: number}[]
-    visibility?: VisibilityType, //(rank of visibility wanted by the card owner)  ---------- two last fields shown in case of owner wants to know on their lists
 }
 
 export type HorizontalType= 'center' | 'start' | 'end' | 'stretch' | 'baseline';

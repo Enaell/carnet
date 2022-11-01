@@ -19,3 +19,24 @@ export enum familyMember {
 }
 
 export const family = Object.values(familyMember);
+
+export function getForMobileName(name: string) {
+  if (name.length > 4)
+    return `${name.slice(0, 3)}..`
+  return name;
+}
+
+export enum typeOfGift {
+  other = 'other',
+  book = 'book',
+  boardgame = 'boardgame',
+  videogame = 'videogame',
+  cooking = 'cooking',
+  cloth = 'cloth',
+  jewel = 'jewel',
+  game = 'game',
+  techno = 'techno',
+  sport = 'sport',
+  association = 'association'
+}
+export const giftTypes= Object.values(typeOfGift);

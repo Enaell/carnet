@@ -12,19 +12,18 @@ import { Autocomplete, Button, TextField, Typography } from '@mui/material';
 import { Column, Row } from '../common/Flexbox';
 import { IntroductionColumn } from './IntroductionColumn';
 import { family } from '../../utils/utils';
-import { translate } from 'counterpart';
 
 type WelcomeSectionType = {
-  onLogin: React.Dispatch<React.SetStateAction<string | undefined>>;
   position?: 'absolute' | 'relative';
 }
 
 export const WelcomeSection = ({ 
   position = 'relative',
-  onLogin
 } : WelcomeSectionType) => {
 
-  const isMobile = useDeviceDetect();
+  const { isMobile } = useDeviceDetect();
+
+  console.log(isMobile);
 
   let navigate = useNavigate();
 
@@ -40,9 +39,7 @@ export const WelcomeSection = ({
     setUsernameError(usError);
 
     if (!usError) {
-    {
-      onLogin(username);
-      navigate('/notebook/gifts');}
+      navigate(`/notebook/${username}`);
     }
   };
 
@@ -51,8 +48,8 @@ export const WelcomeSection = ({
       <div style={isMobile ? backgroundImgMobile : backgroundImg}/>
       <Column horizontal={isMobile ? 'center' : 'end'} width={ isMobile ? '100%' : '45%'}>
         <Column horizontal={'start'} style={ isMobile ? connectionDivMobile : connectionDiv }>
-          <Typography  style={{fontWeight : 'bold'}} align={ isMobile ? 'center': 'inherit' } color="secondary" variant='h2' noWrap={!isMobile}>
-            {'application-name'}
+          <Typography  style={{fontWeight : 'bold'}} align={ isMobile ? 'center': 'inherit' } color="green" variant='h2' noWrap={!isMobile}>
+            { 'Carnet de Noël' }
           </Typography>
           <form style={{width: '100%', height: '100%', paddingTop: '20px'}}>
             <Row width='100%' height='100%' vertical={'center'}>
@@ -70,14 +67,14 @@ export const WelcomeSection = ({
                       {...params}
                       error = {usernameError}
                       variant="standard"
-                      label={ translate('connection.username') }
-                      placeholder={ translate('connection.usernameError') }
+                      label={ 'Nom' }
+                      placeholder={ 'Veuillez selectionner un nom' }
                     />
                   )}
                 />
                 <Row horizontal='space-around' style={{width: '100%', paddingTop: '10px'}}>
                   <Button className='whiteButton' variant='outlined' type='submit' onClick={ onLoginClick }>
-                    { translate('connection.login') }
+                    { 'Se connecter' }
                   </Button>
                 </Row>
               </Column>

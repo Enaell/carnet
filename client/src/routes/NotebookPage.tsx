@@ -3,7 +3,7 @@ import { Notebook } from '../components/notebook/Notebook';
 
 export const NotebookPage = () => {
   return(
-      <Row horizontal='center'>
+      <Row height='100vh' width='100%' horizontal='center'>
         <Notebook />
       </Row>
     );

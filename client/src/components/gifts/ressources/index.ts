@@ -1,0 +1,11 @@
+export * as giftPict from './ressources/gifts.jpg';
+export * as boardgamePict from './ressources/boardGame.jpg';
+export * as clothPict from './ressources/cloths.jpg';
+export * as cookingPict from './ressources/cooking.jpg';
+export * as gamePict from './ressources/game.jpg';
+export * as bookPict from './ressources/book.jpeg';
+export * as jewelPict from './ressources/jewel.jpg';
+export * as videoGamePict from './ressources/videoGames.jpeg';
+export * as techoPict from './ressources/technologie.jpg';
+export * as sportPict from './ressources/sport.png';
+export * as associationPict from './ressources/association.jpg';

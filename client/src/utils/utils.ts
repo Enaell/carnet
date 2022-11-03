@@ -1,5 +1,5 @@
 import { QueryDocumentSnapshot, DocumentData } from "firebase/firestore/lite";
-import { GiftByMember, GiftType } from "../components/common/types";
+import { GiftByMember } from "../components/common/types";
 
 export enum familyMember {
     Isabelle = 'Isabelle',

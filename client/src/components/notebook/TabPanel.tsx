@@ -1,3 +1,4 @@
+import useDeviceDetect from "../../hooks/useDeviceDetect";
 import { Column, Row } from "../common/Flexbox";
 import { GiftType } from "../common/types";
 import { GiftCard } from "../gifts/GiftCard";
@@ -27,6 +28,8 @@ export const TabPanel = ({
   onReserve,
   ...other
 }: TabPanelProps) => {
+  const { isMobile } = useDeviceDetect();
+
   return (
     <div
       role="tabpanel"
@@ -35,7 +38,7 @@ export const TabPanel = ({
       aria-labelledby={`vertical-tab-${index}`}
       {...other}
     >
-      <Column width='100%' horizontal='center'>
+      <Column width='100%' horizontal='center' >
         <Row>
           {isOwned && <GiftCard
             isOwned={isOwned}
@@ -63,3 +66,4 @@ export const TabPanel = ({
     </div>
   );
 }
+

@@ -52,7 +52,7 @@ export const GiftCard = ({ gift, isOwned, creation = false, createGift, updateGi
   const [pictureInfo, setPictureInfo] = useState(getPictureByType(newGift?.types ? newGift?.types[0]: undefined));
 
   return (
-    <div style={{width: isMobile ? '80%' : '615px', height: '100%'}} onMouseOver={() => {setOnHover(true)}} onMouseLeave={()=>{setOnHover(false)}}>
+    <div style={{width: isMobile ? '100%' : '615px', height: '100%'}} onMouseOver={() => {setOnHover(true)}} onMouseLeave={()=>{setOnHover(false)}}>
       <Row width='100%' style={{position: 'relative', margin: '10px'}} >
         {!isMobile && <> <CardMedia 
           style={{ 

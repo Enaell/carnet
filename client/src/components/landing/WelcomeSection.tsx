@@ -46,7 +46,7 @@ export const WelcomeSection = ({
       <div style={isMobile ? backgroundImgMobile : backgroundImg}/>
       <Column horizontal={isMobile ? 'center' : 'end'} width={ isMobile ? '100%' : '45%'}>
         <Column horizontal={'start'} style={ isMobile ? connectionDivMobile : connectionDiv }>
-          <Typography  style={{fontWeight : 'bold'}} align={ isMobile ? 'center': 'inherit' } color="green" variant='h2' noWrap={!isMobile}>
+          <Typography  style={{fontWeight : 'bold'}} align={ isMobile ? 'center': 'inherit' } color="red" variant='h2' noWrap={!isMobile}>
             { 'Carnet de Noël' }
           </Typography>
           <form style={{width: '100%', height: '100%', paddingTop: '20px'}}>
@@ -58,7 +58,6 @@ export const WelcomeSection = ({
                   options={family}
                   getOptionLabel={(member: string) => member}
                   filterSelectedOptions
-                  disableCloseOnSelect
                   onChange={(_event, value) => handleUserNameChange(value || '')}
                   renderInput={(params: any) => (
                     <TextField
@@ -71,7 +70,7 @@ export const WelcomeSection = ({
                   )}
                 />
                 <Row horizontal='space-around' style={{width: '100%', paddingTop: '10px'}}>
-                  <Button className='whiteButton' variant='outlined' type='submit' onClick={ onLoginClick }>
+                  <Button className='whiteButton' variant='contained' type='submit' onClick={ onLoginClick }>
                     { 'Se connecter' }
                   </Button>
                 </Row>

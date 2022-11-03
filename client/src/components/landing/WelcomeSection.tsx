@@ -23,8 +23,6 @@ export const WelcomeSection = ({
 
   const { isMobile } = useDeviceDetect();
 
-  console.log(isMobile);
-
   let navigate = useNavigate();
 
   const [username, setUsername] = useState("");

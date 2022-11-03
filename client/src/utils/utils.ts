@@ -1,3 +1,6 @@
+import { QueryDocumentSnapshot, DocumentData } from "firebase/firestore/lite";
+import { GiftByMember, GiftType } from "../components/common/types";
+
 export enum familyMember {
     Isabelle = 'Isabelle',
     Luigi = 'Luigi',
@@ -40,3 +43,31 @@ export enum typeOfGift {
   association = 'association'
 }
 export const giftTypes= Object.values(typeOfGift);
+
+export function formatGiftByMember(docs: QueryDocumentSnapshot<DocumentData>[]) {
+  return docs.reduce((obj, doc) => {
+    const gift = doc.data();
+    return {
+      ...obj,
+      [gift.owner]: obj[gift.owner]
+      ? [
+        ...obj[gift.owner], 
+        {
+          _id: gift._id,
+          owner: gift.owner,
+          name: gift.name,
+          price: gift.price,
+          reservations: gift.reservations,
+          types: gift.types
+        }]
+      : [{
+        _id: gift._id,
+        owner: gift.owner,
+        name: gift.name,
+        price: gift.price,
+        reservations: gift.reservations,
+        types: gift.types
+      }]
+    }
+  }, {} as GiftByMember);
+}

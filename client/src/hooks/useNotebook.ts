@@ -13,7 +13,7 @@ export function useNoteBook() {
   
   useEffect(() => {
     if (user) {
-      giftApi.getAllGifts(user).then(gifts => {
+      giftApi.getAllGifts().then(gifts => {
         console.log('===========================================')
         setGiftsByPerson(gifts)
       });
@@ -25,7 +25,7 @@ export function useNoteBook() {
       const memberGifts = giftsByPerson && giftsByPerson[user] ? giftsByPerson[user] : []
       const res = await giftApi.createGift(newGift, user);
       if (res.success) {
-        const gift = {...newGift, id: newGift.name}
+        const gift = {...newGift, _id: newGift.name}
         setGiftsByPerson({...giftsByPerson, [user]: [gift, ...memberGifts]});
       }
     }
@@ -33,7 +33,7 @@ export function useNoteBook() {
 
   async function updateGift(updatedGift: GiftType) {
     if (user && updatedGift.name){
-      const newGifts = giftsByPerson[user].map(gift => gift.id === updatedGift.id ? updatedGift: gift);
+      const newGifts = giftsByPerson[user].map(gift => gift._id === updatedGift._id ? updatedGift: gift);
       setGiftsByPerson({...giftsByPerson, [user]: newGifts})
       await giftApi.updateGift(updatedGift, user);
     }
@@ -41,7 +41,7 @@ export function useNoteBook() {
   
   async function onReserve(giftToReserve: GiftType) {
     if (giftToReserve.owner && giftToReserve.name) {
-      const newGifts = giftsByPerson[giftToReserve.owner].map(gift => gift.id === giftToReserve.id ? giftToReserve : gift);
+      const newGifts = giftsByPerson[giftToReserve.owner].map(gift => gift._id === giftToReserve._id ? giftToReserve : gift);
       setGiftsByPerson({...giftsByPerson, [giftToReserve.owner]: newGifts})
       if(user)
         await giftApi.updateGift(giftToReserve, user);
@@ -49,7 +49,7 @@ export function useNoteBook() {
   }
 
   async function  deleteGift(deletedGift: GiftType) {
-    if (user && deletedGift.id) {
+    if (user && deletedGift._id) {
       giftApi.deleteGift(deletedGift, user);
       setGiftsByPerson({...giftsByPerson, [user]: giftsByPerson[user].filter(gift => gift.name !== deletedGift.name)});
     }

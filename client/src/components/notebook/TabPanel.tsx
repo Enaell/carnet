@@ -46,7 +46,7 @@ export const TabPanel = ({
           />}
         </Row>
         {value === index && (gifts?.map((gift, i) => (
-          <Row key={`${gift.id}${i}`}>
+          <Row key={`${gift._id}${i}`}>
             <GiftCard
               isOwned={isOwned}
               key={gift.name}

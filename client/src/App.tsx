@@ -4,6 +4,7 @@ import { Column } from './components/common/Flexbox';
 import { RoutesSwitch } from './routes/Routes';
 import { ThemeProvider } from '@emotion/react';
 import { theme } from './utils/theme';
+import { initializeApp } from 'firebase/app';
 
 function App() {
   return (

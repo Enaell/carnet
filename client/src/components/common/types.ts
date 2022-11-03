@@ -1,12 +1,16 @@
 import { typeOfGift } from "../../utils/utils";
 
 export type GiftType= {
-    id?: string,
+    _id?: string,
     owner?: string,
     name?: string,
     types?: typeOfGift[],
     price?: {min?: number, max?: number, average?: number},
     reservations?: {userName: string, price?: number}[]
+}
+
+export type GiftByMember = {
+  [member: string]: GiftType[];
 }
 
 export type HorizontalType= 'center' | 'start' | 'end' | 'stretch' | 'baseline';

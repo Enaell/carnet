@@ -4,7 +4,7 @@ import { useNoteBook } from "../../hooks/useNotebook";
 import { family } from "../../utils/utils";
 import { TabPanel } from "./TabPanel";
 import MenuOutlinedIcon from '@mui/icons-material/MenuOutlined';
-import useDeviceDetect from "../../hooks/useDeviceDetect";
+import { Row } from "../common/Flexbox";
 
 function a11yProps(index: any) {
   return {
@@ -13,7 +13,7 @@ function a11yProps(index: any) {
   };
 }
 
-export const Notebook = () => {
+export const Notebook = ({isMobile}: {isMobile:boolean}) => {
   const [value, setValue] = useState(0);
   const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
     setValue(newValue);
@@ -23,10 +23,7 @@ export const Notebook = () => {
 
   const [onTabHeader, setOnTabHeader] = useState(true);
 
-  const { isMobile } = useDeviceDetect();
-
-  return (
-    <>
+  return (<Row>
     {!isMobile || onTabHeader
       ? <Tabs
         orientation="vertical"
@@ -34,7 +31,7 @@ export const Notebook = () => {
         value={value}
         onChange={handleChange}
         aria-label="Vertical tabs"
-        style={{height: "100vh"}}
+        style={{maxHeight: !isMobile ? 'calc(100vh - 100px)': '100vh'}}
       >
         { family.map((member, index) => <Tab key={member} label={`${member}`} {...a11yProps(index)}/> )}
       </Tabs>
@@ -43,7 +40,15 @@ export const Notebook = () => {
         </Button>
     }
 
-    <div style={{height: '100vh', overflow: 'auto', width: '100%'}} onClick={() => setOnTabHeader(false)}>
+    <div 
+      style={{
+        maxHeight: !isMobile ? 'calc(100vh - 100px)': '100vh',
+        overflowY: 'auto',
+        overflowX: 'hidden',
+        width: isMobile ? '100%' : '1000px'
+      }}
+      onClick={() => setOnTabHeader(false)}
+    >
       {family.map((member, index) => {
         return(
           <TabPanel
@@ -63,8 +68,5 @@ export const Notebook = () => {
         }
       )}
     </div>
-
-    </>
-
-  );
+  </Row>);
 }

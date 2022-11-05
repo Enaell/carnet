@@ -1,4 +1,4 @@
-import { FormControlLabel, Switch, Box } from '@mui/material';
+import { FormControlLabel, Switch, Box, Chip, Typography } from '@mui/material';
 import { useState } from 'react';
 import useDeviceDetect from '../../hooks/useDeviceDetect';
 import { getForMobileName } from '../../utils/utils';
@@ -15,14 +15,22 @@ export const ResevationPanel = ({ userName, gift, onReserve}: {
 
   const [isReserved, setIsReserved] = useState(gift.reservations?.some(reservation => reservation.userName === userName))
 
-  const [onHover, setOnHover] = useState(false);
-
   return (
-    <div onMouseOver={() => {setOnHover(true)}} onMouseLeave={()=>{setOnHover(false)}}>
+    // <div onMouseOver={() => {setOnHover(true)}} onMouseLeave={()=>{setOnHover(false)}}>
 
-    <Column horizontal='start' width= {isMobile ? '100%' : '135px'}>
-       { (onHover || isMobile || !gift.reservations || !gift.reservations.length) && <FormControlLabel
-          labelPlacement="top"
+    <Row style={{border: 'dashed green', borderRadius: '5px', padding:'20px 0', marginBottom: '30px'}} horizontal='space-around' width='100%' >
+      <Row wrap width='500px' horizontal='space-between' vertical='center'>
+        <Typography> Participants : </Typography>
+        <Row width='375px' >
+          {gift.reservations?.map((reservation, index) => (
+            <Box key={`${reservation.userName}${index}`} padding='0 10px' >
+              <Chip label={reservation.userName} variant="outlined" />
+            </Box>
+          ))}
+        </Row>
+      </Row>
+      <FormControlLabel
+          labelPlacement='start'
           control={<Switch 
             color='primary'
             checked={isReserved} 
@@ -40,15 +48,8 @@ export const ResevationPanel = ({ userName, gift, onReserve}: {
           />}
           style={isMobile ? {marginLeft: '6px'} : undefined}
         label={isMobile ? '' : 'Je participe !'}
-      />}
-      <Row wrap width='100%' horizontal='start' style={{marginLeft: '10px'}}>
-        {gift.reservations?.map((reservation, index) => (
-          <Box key={`${reservation.userName}${index}`} >
-            {isMobile ? getForMobileName(reservation.userName) : reservation.userName}
-          </Box>
-        ))}
-      </Row>
-    </Column>
-    </div>
+      />
+    </Row>
+    // </div>
   )
 }

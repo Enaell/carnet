@@ -43,8 +43,9 @@ export function useNoteBook() {
     if (giftToReserve.owner && giftToReserve.name) {
       const newGifts = giftsByPerson[giftToReserve.owner].map(gift => gift._id === giftToReserve._id ? giftToReserve : gift);
       setGiftsByPerson({...giftsByPerson, [giftToReserve.owner]: newGifts})
-      if(user)
-        await giftApi.updateGift(giftToReserve, user);
+      console.log(giftToReserve);
+      // if(user)
+      //   await giftApi.updateGift(giftToReserve, user);
     }
   }
 

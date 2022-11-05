@@ -4,6 +4,8 @@ export type GiftType= {
     _id?: string,
     owner?: string,
     name?: string,
+    description?: string;
+    link?: string;
     types?: typeOfGift[],
     price?: {min?: number, max?: number, average?: number},
     reservations?: {userName: string, price?: number}[]

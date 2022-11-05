@@ -1,8 +1,6 @@
-import useDeviceDetect from "../../hooks/useDeviceDetect";
 import { Column, Row } from "../common/Flexbox";
 import { GiftType } from "../common/types";
 import { GiftCard } from "../gifts/GiftCard";
-import { ResevationPanel } from "./ReservationPanel";
 
 type TabPanelProps = {
   gifts?: GiftType[],
@@ -28,7 +26,6 @@ export const TabPanel = ({
   onReserve,
   ...other
 }: TabPanelProps) => {
-  const { isMobile } = useDeviceDetect();
 
   return (
     <div
@@ -40,25 +37,30 @@ export const TabPanel = ({
     >
       <Column width='100%' horizontal='center' >
         <Row>
-          {isOwned && <GiftCard
+          {isOwned &&
+          <GiftCard
             isOwned={isOwned}
+            userName={userName}
             creation
             createGift={createGift}
             updateGift={updateGift}
             deleteGift={deleteGift}
+            onReserve={onReserve}
           />}
         </Row>
         {value === index && (gifts?.map((gift, i) => (
           <Row key={`${gift._id}${i}`}>
             <GiftCard
               isOwned={isOwned}
+              userName={userName}
               key={gift.name}
               gift={gift}
-              createGift={createGift} 
+              createGift={createGift}
               updateGift={updateGift}
               deleteGift={deleteGift}
+              onReserve={onReserve}
             />
-            { !isOwned && <ResevationPanel userName={userName} gift={gift} onReserve={onReserve}/>}
+            {/* { !isOwned && <ResevationPanel userName={userName} gift={gift} onReserve={onReserve}/>} */}
           </Row>)
           )
         )}

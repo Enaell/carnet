@@ -2,12 +2,13 @@ import { useState } from 'react'
 import { Column, Row } from '../common/Flexbox'
 import { GiftType } from '../common/types';
 import useDeviceDetect from '../../hooks/useDeviceDetect';
-import { Card, CardContent, Button, Accordion, AccordionDetails, AccordionSummary, Typography } from '@mui/material';
-import { typeOfGift } from '../../utils/utils';
-import { CreateOutlined, SaveAltOutlined, DeleteOutlined, Close } from '@mui/icons-material';
+import { Card, CardContent, Button, Accordion, AccordionDetails, AccordionSummary, Typography, Chip } from '@mui/material';
+import { mobileFont, previewReservation, typeOfGift } from '../../utils/utils';
+import { CreateOutlined, SaveAltOutlined, DeleteOutlined, ExpandMore } from '@mui/icons-material';
 import { GiftPicture } from './GiftPicture';
 import { GiftInfos } from './GiftInfos';
 import { ResevationPanel } from '../notebook/ReservationPanel';
+
 
 export const GiftCard = ({ gift, isOwned, userName, creation = false, createGift, updateGift, deleteGift, onReserve}: {
   gift?: GiftType,
@@ -28,129 +29,138 @@ export const GiftCard = ({ gift, isOwned, userName, creation = false, createGift
   const [newGift, setNewGift] = useState(gift || {} as GiftType);
 
   return (
-    <div style={{width: isMobile ? '100%' : '900px', height: '100%'}} onMouseOver={() => {setOnHover(true)}} onMouseLeave={()=>{setOnHover(false)}}>
+    <div style={{width: isMobile ? '100vw' : '900px', height: '100%'}} onMouseOver={() => {setOnHover(true)}} onMouseLeave={()=>{setOnHover(false)}}>
       <Row width='100%' style={{position: 'relative', margin: '10px'}} >
-        {!isMobile && 
         <GiftPicture
-          isMobile={false}
+          isMobile={isMobile}
           onHover={onHover}
           onModify={onModify}
           giftType={newGift?.types?.[0] || 'other' as typeOfGift}
           updateGiftType={ (newType: typeOfGift) => setNewGift({...newGift, types: [newType]})}
-        />}
+        />
       <Card
         elevation={onHover ? 5 : 1}
-        style={{width: isMobile ? '100%' : '900px', paddingTop: '0', margin: isMobile ? '' : '0 0 0 50px'}}
+        style={{width: isMobile ? 'calc(100vw - 20px)' : '900px', paddingTop: '0', margin: isMobile ? '' : '0 0 0 50px'}}
       >
         <Accordion onChange={() => isOwned && setOnModify(!onModify)}>
           <AccordionSummary
-            expandIcon={isOwned ? <CreateOutlined /> : <Close />}
+            expandIcon={isOwned ? <CreateOutlined /> : <ExpandMore />}
             aria-controls="panel1a-content"
             id="panel1a-header"
           >
-            <Row 
+            <Column vertical='space-around' style={{paddingLeft: '60px'}}>
+              { !isOwned && gift && previewReservation(gift, userName).map(reservation => (
+              <Chip
+                style={{ backgroundColor: 'green', color: 'white', zIndex: 2}}
+                label={reservation}
+                variant="outlined"
+              />))
+              }
+            </Column>
+            <Row
               horizontal='space-between'
               vertical='center'
-              height='76px'
+              height={ '76px'}
               width='100%'
-              style={{paddingLeft: '90px'}}
+              style={{paddingLeft: '30px'}}
             >
-              <Typography 
+              <Typography
                 sx={{
-                  width: '50%',
-                  color: isOwned && !gift ? 'green' : undefined
+                  width: '60%',
+                  color: isOwned && !gift ? 'green' : undefined,
                 }}
+                fontStyle={isMobile ? {...mobileFont} : undefined}
               >
                 {isOwned && !gift ? 'Nouveau Cadeau' : gift?.name }
               </Typography>
               <Typography 
                 sx={{color: isOwned && !gift ? 'darkgreen' : 'grey'}}
+                fontStyle={isMobile ? { ...mobileFont }: undefined}
               >
-                {isOwned && !gift ? 'Ajouter une nouvelle idee cadeau' : `Prix ~${gift?.price?.average}€`}
+                {isOwned && !isMobile && !gift ? 'Ajouter une nouvelle idee cadeau' : `~${gift?.price === undefined ? '?' : gift.price.average}€`}
               </Typography>
-              <Row width='160px'>
+              { !isMobile ? 
+              <Row width='160px' horizontal='end'>
                 {onModify && <>
-                <Button>
-                  <SaveAltOutlined
-                    onClick={async () => {
-                      if (creation) {
-                        createGift(newGift);
-                        setNewGift({
-                          name: '',
-                          price: {average: 0, max: 0, min: 0},
-                          types:['other' as typeOfGift]
-                        });
-                      }
-                      else {                        
-                        updateGift(newGift);
-                        setOnModify(false)
-                      }
-                    }}
-                    color='action'
-                    titleAccess={'Save'}
+                  <Button>
+                    <SaveAltOutlined
+                      onClick={async () => {
+                        if (creation) {
+                          createGift(newGift);
+                          setNewGift({
+                            name: '',
+                            price: {average: 0, max: 0, min: 0},
+                            types:['other' as typeOfGift]
+                          });
+                        }
+                        else {                        
+                          updateGift(newGift);
+                          setOnModify(false)
+                        }
+                      }}
+                      color='action'
+                      titleAccess={'Save'}
                     />
                   </Button>
-                  <Button>
+                  { gift && <Button>
                     <DeleteOutlined onClick={() => {if(gift) deleteGift(gift); setOnModify(false)}}  color='action' titleAccess={'Delete'}/>
-                  </Button>
+                  </Button>}
                 </>}
               </Row>
+              : 
+              <Column horizontal='end'>
+                {onModify && <>
+                  <Button>
+                    <SaveAltOutlined
+                      onClick={async () => {
+                        if (creation) {
+                          createGift(newGift);
+                          setNewGift({
+                            name: '',
+                            price: {average: 0, max: 0, min: 0},
+                            types:['other' as typeOfGift]
+                          });
+                        }
+                        else {                        
+                          updateGift(newGift);
+                          setOnModify(false)
+                        }
+                      }}
+                      color='action'
+                      titleAccess={'Save'}
+                    />
+                  </Button>
+                  { gift && <Button>
+                    <DeleteOutlined onClick={() => {if(gift) deleteGift(gift); setOnModify(false)}}  color='action' titleAccess={'Delete'}/>
+                  </Button>}
+                </>}
+              </Column>
+              }
+              
             </Row>
           </AccordionSummary>
-        <AccordionDetails style={{paddingTop: 0}}>
-        <CardContent style={ isMobile ? {padding: '10px 0px 10px 10px'} : { paddingTop: 0, paddingLeft: '50px' }} >
-          <Column width={'100%'} height={'100%'} horizontal='center'>
-            { !isOwned && gift &&
-              <ResevationPanel userName={userName} gift={gift} onReserve={onReserve}/>
-            }
-            <GiftInfos
-              isOwned={isOwned}
-              isMobile={isMobile}
-              gift={gift}
-              newGift={newGift}
-              setNewGift={setNewGift}
-            />
-            {/* { isOwned && (onHover || isMobile) && <Column>
-            { !onModify ?
-              <>
-                <Button onClick={() => setOnModify(true)}>
-                  <CreateOutlined color='action' titleAccess={'Modify'}/>
-                </Button>
-              </>
-              : 
-              <>
-                <Button>
-                  <SaveAltOutlined
-                    onClick={async () => {
-                      if (creation) {
-                        createGift(newGift);
-                        setNewGift({
-                          name: '',
-                          price: {average: 0, max: 0, min: 0},
-                          types:['other' as typeOfGift]
-                        })
-                      }
-                      else {                        
-                        updateGift(newGift);
-                        setOnModify(false)
-                      }
-                    }}
-                    color='action'
-                    titleAccess={'Save'}
-                  />
-                </Button>
-                <Button>
-                  <DeleteOutlined onClick={() => {if(gift) deleteGift(gift); setOnModify(false)}}  color='action' titleAccess={'Delete'}/>
-                </Button>
-                <Button>
-                  <Close onClick={() => {setNewGift(gift || {} as GiftType); setOnModify(false)}} color='action' titleAccess={'Cancel'}/>
-                </Button>
-              </>}
-            </Column>} */}
-          </Column>
-        </CardContent>
-        </AccordionDetails>
-          </Accordion>
+          <AccordionDetails style={{paddingTop: 0}}>
+            <CardContent style={ isMobile ? {padding: '10px 0px 10px 10px'} : { paddingTop: 0, paddingLeft: '50px' }} >
+              <Column width={'100%'} height={'100%'} horizontal='center'>
+                { !isOwned && gift &&
+                <ResevationPanel
+                  isMobile={isMobile}
+                  userName={userName}
+                  gift={gift}
+                  onReserve={onReserve}
+                />
+                }
+                <GiftInfos
+                  isOwned={isOwned}
+                  isMobile={isMobile}
+                  gift={gift}
+                  newGift={newGift}
+                  setNewGift={setNewGift}
+                />
+              </Column>
+            </CardContent>
+          </AccordionDetails>
+        </Accordion>
       </Card>
     </Row>
   </div>)

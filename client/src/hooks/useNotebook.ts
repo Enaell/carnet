@@ -14,7 +14,6 @@ export function useNoteBook() {
   useEffect(() => {
     if (user) {
       giftApi.getAllGifts().then(gifts => {
-        console.log('===========================================')
         setGiftsByPerson(gifts)
       });
     }
@@ -44,8 +43,8 @@ export function useNoteBook() {
       const newGifts = giftsByPerson[giftToReserve.owner].map(gift => gift._id === giftToReserve._id ? giftToReserve : gift);
       setGiftsByPerson({...giftsByPerson, [giftToReserve.owner]: newGifts})
       console.log(giftToReserve);
-      // if(user)
-      //   await giftApi.updateGift(giftToReserve, user);
+      if(user)
+        await giftApi.updateGift(giftToReserve, user);
     }
   }
 

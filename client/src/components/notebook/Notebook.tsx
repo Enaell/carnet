@@ -23,7 +23,7 @@ export const Notebook = ({isMobile}: {isMobile:boolean}) => {
 
   const [onTabHeader, setOnTabHeader] = useState(true);
 
-  return (<Row>
+  return (<Row >
     {!isMobile || onTabHeader
       ? <Tabs
         orientation="vertical"
@@ -31,7 +31,13 @@ export const Notebook = ({isMobile}: {isMobile:boolean}) => {
         value={value}
         onChange={handleChange}
         aria-label="Vertical tabs"
-        style={{maxHeight: !isMobile ? 'calc(100vh - 100px)': '100vh'}}
+        style={{
+          zIndex: 99,
+          maxHeight: !isMobile ? 'calc(100vh - 100px)': '100vh',
+          position: !isMobile ? 'relative' : 'absolute',
+          left: !isMobile ? undefined : 0,
+          backgroundColor: 'white',
+        }}
       >
         { family.map((member, index) => <Tab key={member} label={`${member}`} {...a11yProps(index)}/> )}
       </Tabs>
@@ -45,7 +51,10 @@ export const Notebook = ({isMobile}: {isMobile:boolean}) => {
         maxHeight: !isMobile ? 'calc(100vh - 100px)': '100vh',
         overflowY: 'auto',
         overflowX: 'hidden',
-        width: isMobile ? '100%' : '1000px'
+        width: isMobile ? '100%' : '1000px',
+        position: isMobile ? 'absolute' : 'relative',
+        left: isMobile ? 0 : undefined,
+        paddingLeft: isMobile && onTabHeader ? '25px' : undefined
       }}
       onClick={() => setOnTabHeader(false)}
     >

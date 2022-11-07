@@ -38,6 +38,7 @@ export const GiftInfos = ({
           readOnly: true,
         }}
         label='Description'
+        multiline
         value={newGift?.description}
         onChange={e=> setNewGift({...newGift, description: e.target.value})}
       />
@@ -64,7 +65,7 @@ export const GiftInfos = ({
           InputProps={isOwned ? undefined : {
             readOnly: true,
           }}
-          style={{width: isMobile ? '50px' : '150px'}}
+          style={{width: isMobile ? '100px' : '150px'}}
           type='number'
           label='Prix moyen'
           value={newGift?.price?.average}
@@ -74,7 +75,7 @@ export const GiftInfos = ({
           InputProps={isOwned ? undefined : {
             readOnly: true,
           }}
-          style={{width: isMobile ? '50px' : '150px'}}
+          style={{width: isMobile ? '100px' : '150px'}}
           type='number'
           label='Prix Max'
           value={newGift?.price?.max}
@@ -84,7 +85,7 @@ export const GiftInfos = ({
           InputProps={isOwned ? undefined : {
             readOnly: true,
           }}
-          style={{width: isMobile ? '50px' : '150px'}}
+          style={{width: isMobile ? '100px' : '150px'}}
           type='number'
           label='Prix Min'
           value={newGift?.price?.min}

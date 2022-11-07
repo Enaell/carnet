@@ -1,36 +1,39 @@
 import { FormControlLabel, Switch, Box, Chip, Typography } from '@mui/material';
 import { useState } from 'react';
-import useDeviceDetect from '../../hooks/useDeviceDetect';
-import { getForMobileName } from '../../utils/utils';
-import { Column, Row } from '../common/Flexbox';
+import { mobileFont } from '../../utils/utils';
+import { Row } from '../common/Flexbox';
 import { GiftType } from '../common/types';
 
 
-export const ResevationPanel = ({ userName, gift, onReserve}: {
+export const ResevationPanel = ({ isMobile, userName, gift, onReserve}: {
+  isMobile: boolean,
   userName: string,
   gift: GiftType,
   onReserve: (gift: GiftType) => Promise<void>
 }) => {
-  const { isMobile } = useDeviceDetect();
 
   const [isReserved, setIsReserved] = useState(gift.reservations?.some(reservation => reservation.userName === userName))
 
   return (
-    // <div onMouseOver={() => {setOnHover(true)}} onMouseLeave={()=>{setOnHover(false)}}>
-
     <Row style={{border: 'dashed green', borderRadius: '5px', padding:'20px 0', marginBottom: '30px'}} horizontal='space-around' width='100%' >
-      <Row wrap width='500px' horizontal='space-between' vertical='center'>
-        <Typography> Participants : </Typography>
-        <Row width='375px' >
+      <Row wrap width={isMobile ? '60%' : '500px'} horizontal='space-around' vertical='center'>
+        <Typography fontStyle={isMobile ? {...mobileFont} : undefined}> Participants : </Typography>
+        <Row wrap width={isMobile ? '100%' : '375px'} >
           {gift.reservations?.map((reservation, index) => (
             <Box key={`${reservation.userName}${index}`} padding='0 10px' >
-              <Chip label={reservation.userName} variant="outlined" />
+              <Chip
+                style={ reservation.userName === userName ? { backgroundColor: 'green', color: 'white'} : undefined}
+                label={reservation.userName}
+                variant="outlined"
+              />
             </Box>
           ))}
         </Row>
       </Row>
       <FormControlLabel
-          labelPlacement='start'
+          componentsProps={isMobile ? {typography: {fontStyle:{...mobileFont}}} : undefined}
+          labelPlacement={isMobile ? 'top' : 'start'}
+          style={isMobile ? {marginLeft: 0} : undefined}
           control={<Switch 
             color='primary'
             checked={isReserved} 
@@ -46,8 +49,7 @@ export const ResevationPanel = ({ userName, gift, onReserve}: {
             }} 
             name='Je participe !'
           />}
-          style={isMobile ? {marginLeft: '6px'} : undefined}
-        label={isMobile ? '' : 'Je participe !'}
+          label={'Je participe !'}
       />
     </Row>
     // </div>

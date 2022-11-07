@@ -81,7 +81,7 @@ export const GiftPicture = ({
         }}
         >
         { onModify && <Autocomplete
-          style={{backgroundColor: '#e34836', height: '104px', width: '100px', borderRadius: '50%'}}
+          style={{backgroundColor: '#e34836', height: '102px', width: '100px', borderRadius: '50%'}}
           limitTags={8}
           options={giftTypes}
           getOptionLabel={(gKind: typeOfGift) => getPictureByType(gKind).name}
@@ -90,8 +90,6 @@ export const GiftPicture = ({
           disableCloseOnSelect
           onChange={(_event, value) => {
             updateGiftType(value || 'other' as typeOfGift)
-            // setNewGift({...newGift, types: values ? [values] : ['other' as typeOfGift]});
-            // setPictureInfo(getPictureByType(values ? values : 'other' as typeOfGift));
           }}
           renderInput={(params: any) => (
             <TextField
@@ -99,7 +97,7 @@ export const GiftPicture = ({
               variant="standard"
               label={'Type'}
               placeholder={'Type'}
-              style={{margin: '20px', width: '110px'}}
+              style={{margin: '20px', width: '100px'}}
             />
           )}
         />
